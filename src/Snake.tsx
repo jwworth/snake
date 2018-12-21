@@ -1,44 +1,49 @@
 import React from 'react';
 
 import _chunk from 'lodash/chunk';
+import _range from 'lodash/range';
 
 const ROW_LENGTH = 50;
 
 type StateProps = {
   world: number[];
+  snake: number[];
 };
 
 class Snake extends React.Component<{}, StateProps> {
   state = {
-    world: [...new Array(ROW_LENGTH * ROW_LENGTH)].map(value => 0),
+    world: _range(ROW_LENGTH * ROW_LENGTH),
+    snake: [122, 123, 124],
   };
 
   render() {
+    const { world, snake } = this.state;
     return (
       <table>
-        {_chunk(this.state.world, ROW_LENGTH).map((row, index) => (
-          <TableRow key={index} row={row} />
+        {_chunk(world, ROW_LENGTH).map((row, index) => (
+          <TableRow key={index} row={row} snake={snake} />
         ))}
       </table>
     );
   }
 }
 
-const TableRow = ({ row }: { row: number[] }) => {
+const TableRow = ({ row, snake }: { row: number[]; snake: number[] }) => {
   return (
     <tr>
-      {row.map((cellValue, index) => {
-        return <Cell key={index} value={cellValue} />;
+      {row.map(cellIndex => {
+        return <Cell key={cellIndex} position={cellIndex} snake={snake} />;
       })}
     </tr>
   );
 };
 
-const Cell = ({ value }: { value: number }) => {
-  const color = (value: number) => (value === 1 ? '#000' : '#fff');
+const Cell = ({ position, snake }: { position: number; snake: number[] }) => {
+  const color = (position: number) =>
+    snake.indexOf(position) !== -1 ? '#000' : '#fff';
   return (
     <td
-      style={{ width: '0.5rem', height: '0.5rem', background: color(value) }}
+      style={{ width: '0.5rem', height: '0.5rem', background: color(position) }}
     />
   );
 };
