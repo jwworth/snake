@@ -8,27 +8,42 @@ const ROW_LENGTH = 50;
 type StateProps = {
   world: number[];
   snake: number[];
+  direction: string;
 };
 
 class Snake extends React.Component<{}, StateProps> {
   state = {
     world: _range(ROW_LENGTH * ROW_LENGTH),
     snake: [123 - 50, 123, 124, 125],
+    direction: 'e',
   };
 
   advance = () => {
-    const { snake } = this.state;
+    const { direction, snake } = this.state;
     const newSnake = snake;
     newSnake.shift();
 
-    const nextPosition = snake[snake.length - 1] + 1;
+    const directionCalculator: {
+      readonly [index: string]: number;
+      n: number;
+      e: number;
+      s: number;
+      w: number;
+    } = { n: -ROW_LENGTH, s: ROW_LENGTH, e: 1, w: -1 };
+
+    const nextPosition =
+      snake[snake.length - 1] + directionCalculator[direction];
     newSnake.push(nextPosition);
 
     this.setState({ snake: newSnake });
   };
 
+  changeDirection = (direction: string) => {
+    this.setState({ direction });
+  };
+
   render() {
-    const { world, snake } = this.state;
+    const { direction, world, snake } = this.state;
     return (
       <React.Fragment>
         <table>
@@ -36,6 +51,18 @@ class Snake extends React.Component<{}, StateProps> {
             <TableRow key={index} row={row} snake={snake} />
           ))}
         </table>
+        <button onClick={() => direction !== 's' && this.changeDirection('n')}>
+          n
+        </button>
+        <button onClick={() => direction !== 'n' && this.changeDirection('s')}>
+          s
+        </button>
+        <button onClick={() => direction !== 'w' && this.changeDirection('e')}>
+          e
+        </button>
+        <button onClick={() => direction !== 'e' && this.changeDirection('w')}>
+          w
+        </button>
         <button onClick={this.advance}>Advance</button>
       </React.Fragment>
     );
