@@ -13,12 +13,17 @@ type StateProps = {
 class Snake extends React.Component<{}, StateProps> {
   state = {
     world: _range(ROW_LENGTH * ROW_LENGTH),
-    snake: [123 - 50, 123, 124, 125, 125 + 50],
+    snake: [123 - 50, 123, 124, 125],
   };
 
   advance = () => {
-    const newSnake = this.state.snake;
+    const { snake } = this.state;
+    const newSnake = snake;
     newSnake.shift();
+
+    const nextPosition = snake[snake.length - 1] + 1;
+    newSnake.push(nextPosition);
+
     this.setState({ snake: newSnake });
   };
 
