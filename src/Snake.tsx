@@ -13,17 +13,26 @@ type StateProps = {
 class Snake extends React.Component<{}, StateProps> {
   state = {
     world: _range(ROW_LENGTH * ROW_LENGTH),
-    snake: [122, 123, 124],
+    snake: [123 - 50, 123, 124, 125, 125 + 50],
+  };
+
+  advance = () => {
+    const newSnake = this.state.snake;
+    newSnake.shift();
+    this.setState({ snake: newSnake });
   };
 
   render() {
     const { world, snake } = this.state;
     return (
-      <table>
-        {_chunk(world, ROW_LENGTH).map((row, index) => (
-          <TableRow key={index} row={row} snake={snake} />
-        ))}
-      </table>
+      <React.Fragment>
+        <table>
+          {_chunk(world, ROW_LENGTH).map((row, index) => (
+            <TableRow key={index} row={row} snake={snake} />
+          ))}
+        </table>
+        <button onClick={this.advance}>Advance</button>
+      </React.Fragment>
     );
   }
 }
