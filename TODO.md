@@ -1,0 +1,6 @@
+- make world
+- make starting piece
+- make snake
+- make snake move (tick)
+- create death conditions
+- make user notices
