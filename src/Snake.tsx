@@ -107,9 +107,11 @@ class Snake extends React.Component<{}, StateProps> {
     return (
       <React.Fragment>
         <table>
-          {_chunk(world, ROW_LENGTH).map((row, index) => (
-            <TableRow key={index} row={row} snake={snake} food={food} />
-          ))}
+          <tbody>
+            {_chunk(world, ROW_LENGTH).map((row, index) => (
+              <TableRow key={index} row={row} snake={snake} food={food} />
+            ))}
+          </tbody>
         </table>
         <p>Length: {snake.length}</p>
       </React.Fragment>
