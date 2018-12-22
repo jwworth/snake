@@ -35,6 +35,11 @@ class Snake extends React.Component<{}, StateProps> {
     this.setState({ timer });
   };
 
+  stop = () => {
+    clearInterval(this.state.timer);
+    this.setState({ timer: undefined });
+  };
+
   handleKeyDown = (event: KeyboardEvent) => {
     const { direction, timer } = this.state;
     if (!timer) {
@@ -86,12 +91,18 @@ class Snake extends React.Component<{}, StateProps> {
 
     const nextPosition =
       snake[snake.length - 1] + directionCalculator[direction];
+
+    if (newSnake.indexOf(nextPosition) !== -1) {
+      this.stop();
+    }
+
     newSnake.push(nextPosition);
 
     if (nextPosition === food) {
       const extraPosition =
         newSnake[newSnake.length - 1] + directionCalculator[direction];
       newSnake.push(extraPosition);
+
       this.distributeFood();
     }
 
