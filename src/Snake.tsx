@@ -20,7 +20,7 @@ type StateProps = {
 class Snake extends React.Component<{}, StateProps> {
   state = {
     world: _range(ROW_LENGTH * ROW_LENGTH),
-    snake: [122, 123, 124, 125],
+    snake: [121, 122, 123, 124, 125],
     direction: 'e',
     food: 127,
     timer: undefined,
@@ -31,7 +31,7 @@ class Snake extends React.Component<{}, StateProps> {
   }
 
   start = () => {
-    const timer = setInterval(this.advance, 500);
+    const timer = setInterval(this.advance, 100);
     this.setState({ timer });
   };
 
