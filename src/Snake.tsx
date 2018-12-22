@@ -4,6 +4,10 @@ import _chunk from 'lodash/chunk';
 import _range from 'lodash/range';
 
 const ROW_LENGTH = 50;
+const LEFT = 37;
+const UP = 38;
+const RIGHT = 39;
+const DOWN = 40;
 
 type StateProps = {
   world: number[];
@@ -16,6 +20,30 @@ class Snake extends React.Component<{}, StateProps> {
     world: _range(ROW_LENGTH * ROW_LENGTH),
     snake: [123 - 50, 123, 124, 125],
     direction: 'e',
+  };
+
+  componentDidMount() {
+    document.addEventListener('keydown', this.handleKeyDown);
+  }
+
+  handleKeyDown = (event: KeyboardEvent) => {
+    const { direction } = this.state;
+    switch (event.keyCode) {
+      case UP:
+        direction !== 's' && this.setState({ direction: 'n' });
+        break;
+      case DOWN:
+        direction !== 'n' && this.setState({ direction: 's' });
+        break;
+      case RIGHT:
+        direction !== 'w' && this.setState({ direction: 'e' });
+        break;
+      case LEFT:
+        direction !== 'e' && this.setState({ direction: 'w' });
+        break;
+      default:
+        break;
+    }
   };
 
   advance = () => {
@@ -52,18 +80,6 @@ class Snake extends React.Component<{}, StateProps> {
           ))}
         </table>
         <p>Length: {snake.length}</p>
-        <button onClick={() => direction !== 's' && this.changeDirection('n')}>
-          n
-        </button>
-        <button onClick={() => direction !== 'n' && this.changeDirection('s')}>
-          s
-        </button>
-        <button onClick={() => direction !== 'w' && this.changeDirection('e')}>
-          e
-        </button>
-        <button onClick={() => direction !== 'e' && this.changeDirection('w')}>
-          w
-        </button>
         <button onClick={this.advance}>Advance</button>
       </React.Fragment>
     );

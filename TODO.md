@@ -1,3 +1,2 @@
-- make snake move (tick)
 - create death conditions
 - make user notices
