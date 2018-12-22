@@ -14,6 +14,7 @@ type StateProps = {
   snake: number[];
   direction: string;
   food: number;
+  timer: NodeJS.Timeout | undefined;
 };
 
 class Snake extends React.Component<{}, StateProps> {
@@ -22,14 +23,23 @@ class Snake extends React.Component<{}, StateProps> {
     snake: [122, 123, 124, 125],
     direction: 'e',
     food: 127,
+    timer: undefined,
   };
 
   componentDidMount() {
     document.addEventListener('keydown', this.handleKeyDown);
   }
 
+  start = () => {
+    const timer = setInterval(this.advance, 500);
+    this.setState({ timer });
+  };
+
   handleKeyDown = (event: KeyboardEvent) => {
-    const { direction } = this.state;
+    const { direction, timer } = this.state;
+    if (!timer) {
+      this.start();
+    }
     switch (event.keyCode) {
       case UP:
         direction !== 's' && this.setState({ direction: 'n' });
@@ -102,7 +112,6 @@ class Snake extends React.Component<{}, StateProps> {
           ))}
         </table>
         <p>Length: {snake.length}</p>
-        <button onClick={this.advance}>Advance</button>
       </React.Fragment>
     );
   }
