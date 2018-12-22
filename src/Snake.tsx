@@ -51,6 +51,7 @@ class Snake extends React.Component<{}, StateProps> {
             <TableRow key={index} row={row} snake={snake} />
           ))}
         </table>
+        <p>Length: {snake.length}</p>
         <button onClick={() => direction !== 's' && this.changeDirection('n')}>
           n
         </button>
