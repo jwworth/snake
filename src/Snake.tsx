@@ -48,8 +48,21 @@ class Snake extends React.Component<{}, StateProps> {
     }
   };
 
+  distributeFood = () => {
+    const potentialLocations = this.state.world.slice();
+    potentialLocations.splice(this.state.food, 1);
+    this.state.snake.map(snakePart => {
+      potentialLocations.splice(snakePart, 1);
+    });
+
+    const newFoodLocation =
+      potentialLocations[Math.floor(Math.random() * potentialLocations.length)];
+
+    this.setState({ food: newFoodLocation });
+  };
+
   advance = () => {
-    const { direction, snake } = this.state;
+    const { direction, snake, food } = this.state;
     const newSnake = snake;
     newSnake.shift();
 
@@ -64,6 +77,13 @@ class Snake extends React.Component<{}, StateProps> {
     const nextPosition =
       snake[snake.length - 1] + directionCalculator[direction];
     newSnake.push(nextPosition);
+
+    if (nextPosition === food) {
+      const extraPosition =
+        newSnake[newSnake.length - 1] + directionCalculator[direction];
+      newSnake.push(extraPosition);
+      this.distributeFood();
+    }
 
     this.setState({ snake: newSnake });
   };
