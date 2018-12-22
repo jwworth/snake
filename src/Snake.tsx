@@ -92,7 +92,7 @@ class Snake extends React.Component<{}, StateProps> {
     const nextPosition =
       snake[snake.length - 1] + directionCalculator[direction];
 
-    if (newSnake.indexOf(nextPosition) !== -1) {
+    if (newSnake.indexOf(nextPosition) !== -1 || edgeCase(nextPosition)) {
       this.stop();
     }
 
@@ -155,6 +155,17 @@ const TableRow = ({
   );
 };
 
+const edgeCase = (position: number) => {
+  return (
+    (position + 1) % ROW_LENGTH === 0 ||
+    (position + 1) % ROW_LENGTH === 1 ||
+    _range(ROW_LENGTH).indexOf(position) !== -1 ||
+    _range(ROW_LENGTH * ROW_LENGTH)
+      .splice(ROW_LENGTH * ROW_LENGTH - ROW_LENGTH, ROW_LENGTH * ROW_LENGTH - 1)
+      .indexOf(position) !== -1
+  );
+};
+
 const Cell = ({
   position,
   snake,
@@ -169,6 +180,8 @@ const Cell = ({
       return '#000';
     } else if (position === food) {
       return '#ff0000';
+    } else if (edgeCase(position)) {
+      return 'orange';
     } else {
       return '#fff';
     }
