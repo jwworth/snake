@@ -13,6 +13,7 @@ type StateProps = {
   world: number[];
   snake: number[];
   direction: string;
+  food: number;
 };
 
 class Snake extends React.Component<{}, StateProps> {
@@ -20,6 +21,7 @@ class Snake extends React.Component<{}, StateProps> {
     world: _range(ROW_LENGTH * ROW_LENGTH),
     snake: [123 - 50, 123, 124, 125],
     direction: 'e',
+    food: 444,
   };
 
   componentDidMount() {
@@ -71,12 +73,12 @@ class Snake extends React.Component<{}, StateProps> {
   };
 
   render() {
-    const { direction, world, snake } = this.state;
+    const { food, direction, world, snake } = this.state;
     return (
       <React.Fragment>
         <table>
           {_chunk(world, ROW_LENGTH).map((row, index) => (
-            <TableRow key={index} row={row} snake={snake} />
+            <TableRow key={index} row={row} snake={snake} food={food} />
           ))}
         </table>
         <p>Length: {snake.length}</p>
@@ -86,19 +88,50 @@ class Snake extends React.Component<{}, StateProps> {
   }
 }
 
-const TableRow = ({ row, snake }: { row: number[]; snake: number[] }) => {
+const TableRow = ({
+  row,
+  snake,
+  food,
+}: {
+  row: number[];
+  snake: number[];
+  food: number;
+}) => {
   return (
     <tr>
       {row.map(cellIndex => {
-        return <Cell key={cellIndex} position={cellIndex} snake={snake} />;
+        return (
+          <Cell
+            key={cellIndex}
+            position={cellIndex}
+            snake={snake}
+            food={food}
+          />
+        );
       })}
     </tr>
   );
 };
 
-const Cell = ({ position, snake }: { position: number; snake: number[] }) => {
-  const color = (position: number) =>
-    snake.indexOf(position) !== -1 ? '#000' : '#fff';
+const Cell = ({
+  position,
+  snake,
+  food,
+}: {
+  position: number;
+  snake: number[];
+  food: number;
+}) => {
+  const color = (position: number) => {
+    if (snake.indexOf(position) !== -1) {
+      return '#000';
+    } else if (position === food) {
+      return '#ff0000';
+    } else {
+      return '#fff';
+    }
+  };
+
   return (
     <td
       style={{ width: '0.5rem', height: '0.5rem', background: color(position) }}
