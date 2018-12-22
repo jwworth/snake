@@ -19,9 +19,9 @@ type StateProps = {
 class Snake extends React.Component<{}, StateProps> {
   state = {
     world: _range(ROW_LENGTH * ROW_LENGTH),
-    snake: [123 - 50, 123, 124, 125],
+    snake: [122, 123, 124, 125],
     direction: 'e',
-    food: 444,
+    food: 127,
   };
 
   componentDidMount() {
